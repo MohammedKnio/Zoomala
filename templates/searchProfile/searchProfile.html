@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block searchProfile %}
+
+<div class='row  mb-3'>
+            {% if searchParams %}
+                Results for <b>{{ searchParams }}</b>
+                <hr/>
+
+            {% endif %}
+
+            <form method='GET' action='{% url 'searchProfile' %}' class="form my-2 my-lg-0 search-form">
+                
+                {{form.as_p }}
+                
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            
+               
+            </form>
+            {% if searchParams %}
+            </div>
+                <hr>
+            </div>
+            <ul>
+            {% for profile in profiles%}
+            
+            <li> <a href="{% url 'profiles:specificUserProfile' profile.user.username %}" > <img  style= "padding:3mm;"src="{{ profile.image.url }}"> </a> <br> <p>{{profile.user.username}}</p> </li>
+
+            
+            {% endfor %}
+            </ul>
+            {% endif %}
+
+            
+</div>
+
+
+
+
+
+
+{% endblock searchProfile %}

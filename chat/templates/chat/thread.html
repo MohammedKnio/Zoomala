@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h3> {% if user != object.first %}{{ object.first }}{% else %}{{ object.second }}{% endif %}</h3>
+{{username}}
+{{user.username}}
+<ul style=" list-style-type: none;" id='chat-items'>
+{% for chat in object.chatmessage_set.all %}
+{% if chat.user == user %} 
+<li style=" text-align:right; "><div ><p style="font-size:25px;"> {{ chat.message }}  </p> </div></li>
+{% else %} 
+<li style=" text-align:left; "><div > <p style="font-size:25px;"> {{ chat.message }}  </p> </div></li>
+{% endif %}
+{% endfor %}
+</ul>
+
+<form id='form' method='POST'> {% csrf_token %}
+{{form.as_p }}
+<input id="sendMsg" type='submit' class='btn btn-primary'/>
+</form>
+
+{% endblock %}
+
+{% block script %}
+
+<script>
+$(document).ready(function(){
+    // alert("jquery world")
+    var formData = $("#form")
+    var messageInput = $("#id_message")
+    var chatItems = $('#chat-items')
+    var loc = window.location
+    var webSocketEndpoint =  'ws://' + loc.host + loc.pathname  // ws : wss
+
+    var socket = new WebSocket(webSocketEndpoint)
+
+    socket.onmessage = function(e){
+        console.log('message', e)
+        // alert(e.data)
+        var msgData = JSON.parse(e.data)
+        console.log(msgData)
+        if(msgData.user == "{{user}}"){
+            chatItems.append(`<li style=" text-align:right " ><div > <p style="font-size:25px;"> ${msgData.msg}  </p> </div></li>`)
+        }
+        else{
+            chatItems.append(`<li style=" text-align:left " ><div > <p style="font-size:25px;"> ${msgData.msg}  </p> </div></li>`)
+        }
+       
+    }
+
+    socket.onopen = function(e){
+        console.log('open', e)
+        formData.submit(function(event){
+            event.preventDefault()
+            var messageText = messageInput.val()
+            console.log(messageText)
+            var jsonData = JSON.stringify({msg: messageText, user:'trying user'})
+            socket.send(jsonData)
+            formData[0].reset()
+        })
+    }
+
+    socket.onerror = function(e){
+        console.log('error', e)
+    }
+    socket.onclose = function(e){
+        console.log('closed', e)
+    }
+
+
+
+
+    if (socket.readyState == WebSocket.OPEN) {
+
+    } else if (socket.readyState == WebSocket.CONNECTING){
+        console.log("connecting..")
+    }
+
+
+})
+
+</script>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+<section class="home-about-area" id="about">
+    <div class="container-fluid">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-lg-6 no-padding home-about-left">
+                <img class="img-fluid" src="{% static 'reg.png'%}" alt="">
+            </div>
+            <div class="col-lg-6 no-padding home-about-right">
+                
+                <div class="content-section">
+
+    <h1>{{ title }}</h1>
+    {% if description %}
+    <p>{{ description }} </p>
+    {% endif %}
+
+
+    {% include "components/form.html" with form=form btn_label=btn_label %}
+
+
+     
+
+</div>
+
+{% endblock content %}
