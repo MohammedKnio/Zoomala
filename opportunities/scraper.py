@@ -49,7 +49,6 @@ def scraper(*args, **kwargs):
     # print(kwargs["rando"])
     # for i in :
     # tagBeingPopulatedWithJobs = tags[i]
-    
         
     tagBeingPopulatedWithJobs =kwargs["tags"][kwargs["rando"](0,len(kwargs["tags"])-1)]
     kwargs["scrapingAndPopulatingDb"](tagBeingPopulatedWithJobs, kwargs["numelem"](1,4), kwargs["selectRandom"])

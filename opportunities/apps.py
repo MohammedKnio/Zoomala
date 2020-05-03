@@ -8,3 +8,4 @@ class OpportunitiesConfig(AppConfig):
         from . import updater
         updater.start()
         print("I will scrape habibe")
+        
