@@ -44,7 +44,7 @@ def register_view(request, *args, **kwargs):
     context = {
         "form": form,
         "btn_label": "Register",
-        "title": "Register"
+        "title": "Register",
     }
     return render(request, "accounts/auth.html", context)
 

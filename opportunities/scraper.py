@@ -34,7 +34,7 @@ def scrapingAndPopulating(search, numelems,random):
         try:
             Title,Link,Location,Company = titles[i], links[i],locations[i], companies[i]
             print(titles[i], links[i],locations[i], companies[i])
-            if Opportunity.objects.all().filter(link = Link).count() > 0:
+            if len(list(Opportunity.objects.all().filter(link = Link))) > 0:
                 print("it is trying to insert duplicates, retrying")
                 raise IntegrityError
             Opportunity.objects.create(title = Title, link= Link, location = Location, company = Company )
