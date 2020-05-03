@@ -24,17 +24,18 @@
       <span class="info">ex. Architecture, Engineering, Art, Design </span>
     </form>
   </div>
-  <script src="js/extention/choices.js"></script>
+  <script src="extention/choices.js"></script>
 
             {% if searchParams %}
+            <hr>
+            <h3>Results for <b>{{ searchParams }}</b> </h3>
+                <hr/>
             </div>
-                <hr>
+                
             </div>
             <div class="container">
 
 
-                Results for <b>{{ searchParams }}</b>
-                <hr/>
 
             <div class="row">
             {% for profile in profiles%}
@@ -52,9 +53,6 @@
               <p> <i class="glyphicon glyphicon-envelope"></i> {{profile.user.email}}
                   <br/> 
           </div>
-          
-      
-            
 
             
             {% endfor %}

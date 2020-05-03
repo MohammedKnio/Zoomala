@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block content %}
 <h3> {% if user != object.first %}{{ object.first }}{% else %}{{ object.second }}{% endif %}</h3>
 {{username}}
@@ -13,19 +13,9 @@
 {% endif %}
 {% endfor %}
 </ul>
-
-<form id='form' method='POST'> {% csrf_token %}
-{{form.as_p }}
-<input id="sendMsg" type='submit' class='btn btn-primary'/>
-</form>
-
-{% endblock %}
-
-{% block script %}
-
 <script>
 $(document).ready(function(){
-    // alert("jquery world")
+    window.scrollTo(0,document.body.scrollHeight);
     var formData = $("#form")
     var messageInput = $("#id_message")
     var chatItems = $('#chat-items')
@@ -45,11 +35,13 @@ $(document).ready(function(){
         else{
             chatItems.append(`<li style=" text-align:left " ><div > <p style="font-size:25px;"> ${msgData.msg}  </p> </div></li>`)
         }
+        window.scrollTo(0,document.body.scrollHeight);
        
     }
 
     socket.onopen = function(e){
         console.log('open', e)
+        window.scrollTo(0,document.body.scrollHeight);
         formData.submit(function(event){
             event.preventDefault()
             var messageText = messageInput.val()
@@ -78,6 +70,10 @@ $(document).ready(function(){
 
 
 })
+ </script>
+<form id='form' method='POST'> {% csrf_token %}
+{{form.as_p }}
+<input id="sendMsg" type='submit' class='btn btn-primary'/>
+</form>
 
-</script>
 {% endblock %}

@@ -8,6 +8,7 @@ from django.views.generic import DetailView, ListView
 
 from .forms import ComposeForm
 from .models import Thread, ChatMessage
+from profiles.models import Profile
 
 
 class InboxView(LoginRequiredMixin, ListView):
@@ -18,6 +19,15 @@ class InboxView(LoginRequiredMixin, ListView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
         context['threads']= self.get_queryset()
+        otherProfiles = []
+        myThreads = Thread.objects.by_user(self.request.user).order_by('-timestamp')
+        for myThread in myThreads:
+            if myThread.first.username == self.request.user.username:
+                otherProfiles.append(Profile.objects.get(user__username=myThread.second.username))
+            else:
+                otherProfiles.append(Profile.objects.get(user__username=myThread.first.username))
+        
+        context['otherProfiles'] = otherProfiles
         return context
 
 

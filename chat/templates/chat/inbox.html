@@ -7,15 +7,28 @@
     What user would you like to chat with?<br>
     <input id="room-name-input" type="text" size="100"><br>
     <input id="room-name-submit" type="button" value="Enter">
+    
+    <h5> Recent Zoomala Chats </h5>
 
-    {% for thread in threads %}
-    
-    {% if thread.first.username == user.username %} 
-    <a href= {% url 'chats:thread' thread.second.username %} >  {{thread.second.username}}
-    {% else %}
-    <a href= {% url 'chats:thread' thread.first.username %} > {{thread.first.username}} </a>
-    {% endif %}
-    
+    <div class="row">
+
+            {% for otherProfile in otherProfiles %}
+
+          <div class="col-sm-2 col-md-2">
+
+          <a href= {% url 'chats:thread' otherProfile.user.username %}>
+              <img src="{{ otherProfile.image.url }} "
+              alt="" class="img-rounded img-responsive" /> </a>
+          </div>
+          <div class="col-sm-4 col-md-4">
+              <blockquote>
+                  <p>{{otherProfile.user.username}} </p> {% if otherProfile.location != None %} <small><cite title="Source Title">{{otherProfile.location}}  <i class="glyphicon glyphicon-map-marker"></i></cite></small> {% endif %}
+              </blockquote>
+              <p> <i class="glyphicon glyphicon-envelope"></i> {{otherProfile.user.email}}
+                  <br/> 
+
+                  <button><a href= {% url 'profiles:specificUserProfile' otherProfile.user.username %}> Visit Profile </a></button>
+          </div>
     
     {% endfor %}
 

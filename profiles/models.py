@@ -18,6 +18,9 @@ class Profile_Query_set(models.QuerySet):
     def search(self, query):
         usersLookup =  Q(user__username__icontains= query) | Q(user__first_name__icontains= query) | Q(user__last_name__icontains= query) | Q(location__icontains= query) | Q(bio__icontains= query)
         return self.filter(usersLookup).distinct()
+    def searchUsername(self, query):
+        userLookup = Q(user__username= query)
+        return self.filter(usersLookup).distinct()
 
 class ProfileManager(models.Manager):
 
@@ -26,6 +29,9 @@ class ProfileManager(models.Manager):
 
     def search(self,query):
         return self.get_queryset().search(query)
+    
+    def searchByUsername(self, query):
+        return self.get_queryset().searchUsername(query)
 
 # class Interest(models.Model):
 #     interest = models.CharField(_("interest"), max_length=100)
